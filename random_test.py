@@ -16,16 +16,22 @@ with open("alerts.yaml", 'r') as stream:
         print(ex)
         exit(1)
 
-print(events)
+#print(events)
 
 def printstatechange(e):
     print ('event: %s, src: %s, dst: %s' % (e.event, e.src, e.dst))
     action, intent = e.event.split('_')
+    if e.src is 'S0':
+        return
     if action == 'alert':
-        potential_end_state_list = sorted([intent, e.src])
-        potential_end_state = "".join(potential_end_state_list)
+        potential_end_state_list = e.dst.split()
+        potential_end_state_list.append(intent)
+        potential_end_state = "".join(sorted(potential_end_state_list))
+        print ("pes is %s\n" % potential_end_state)
+        # pes is AXZB
         if potential_end_state in endstates:
             print("End state %s reached!" % potential_end_state)
+            exit(0)
         
 
 fsm = Fysom({'initial': 'S0', 'events': events, })

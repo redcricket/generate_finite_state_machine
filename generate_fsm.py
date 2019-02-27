@@ -44,6 +44,65 @@ def dst(t,s):
     return(s)
 
 yaml = "---\n"
+
+# corner cases
+'''
+For single state endstates output something like this:
+
+ - name: 'alert_C'
+   src: '*'
+   dst: '='
+'''
+single_state_alerts = []
+for es in endstates:
+    if len(es) == 1:
+        yaml += ''' - name: 'alert_%s'
+   src: '*'
+   dst: '='
+''' % ( es )
+        single_state_alerts.append('alert_%s' % es)
+
+'''
+duplicate alerts need to be handled. ie if you get alert_A then alert_Z then alert_A again.
+
+ - name: 'alert_A'
+   src:
+     - 'A'
+     - 'AX'
+     - 'AY'
+     - 'AZ'
+     - 'AXY'
+     - 'AXZ'
+     - 'AYZ' 
+   dst: '='
+'''
+
+for a in [alert for alert in trans if 'alert'in alert]:
+    if a in single_state_alerts:
+        continue
+    action, intent = a.split('_')
+    yaml += ''' - name: '%s'
+   src:
+''' % a
+    for s in [state for state in states if intent in state]:
+        yaml += "      - '%s'\n" % s
+    yaml += "   dst: '='\n" 
+    
+
+''' 
+Now the next corner case in the clear_A when alert_A has never been recieved.
+'''
+for c in [clear for clear in trans if 'clear'in clear]:
+    action, intent = c.split('_')
+    yaml += ''' - name: '%s'
+   src:
+''' % c
+    for s in [state for state in states if intent not in state]:
+        if s == '':
+            s = 'S0'
+        yaml += "      - '%s'\n" % s
+    yaml += "   dst: '='\n" 
+
 for t in trans:
     for s in states:
         d = dst(t,s)
