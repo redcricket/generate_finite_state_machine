@@ -21,18 +21,21 @@ with open("alerts.yaml", 'r') as stream:
 def printstatechange(e):
     print ('event: %s, src: %s, dst: %s' % (e.event, e.src, e.dst))
     action, intent = e.event.split('_')
-    if e.src is 'S0':
+    if e.src == 'S0':
+        if e.event == 'alert_C':
+            print("End state C reached!")
         return
+
     if action == 'alert':
-        potential_end_state_list = e.dst.split()
-        potential_end_state_list.append(intent)
-        potential_end_state = "".join(sorted(potential_end_state_list))
-        print ("pes is %s\n" % potential_end_state)
-        # pes is AXZB
-        if potential_end_state in endstates:
-            print("End state %s reached!" % potential_end_state)
-            exit(0)
-        
+        # esrc = 'XY'
+        newdst = list(e.src)
+        newdst.append(intent)
+        newdst = sorted(newdst)
+        newdst = "".join(newdst)
+        es = [es for es in endstates if es in newdst]
+        if es:
+            print("End state %s reached!\n" % es)
+            # exit(0)
 
 fsm = Fysom({'initial': 'S0', 'events': events, })
 
@@ -59,6 +62,7 @@ while True:
             fsm.clear_B()
     if t == 'C':
         if a == 'alert':
+            print("Alert C called.");
             fsm.alert_C()
         # clear_C is ignored.
     if t == 'X':
@@ -76,6 +80,6 @@ while True:
             fsm.alert_Z()
         else:
             fsm.clear_Z()
-    time.sleep(2)
+    time.sleep(1)
     
 
