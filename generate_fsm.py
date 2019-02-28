@@ -3,8 +3,9 @@ from itertools import combinations
 """
 """
 
-input = ['A', 'B', 'C', 'X', 'Y', 'Z']
-endstates = ['C', 'AB', 'XYZ']
+# input = ['A', 'B', 'C', 'X', 'Y', 'Z']
+input = ['A', 'B', 'C', 'L', 'M', 'N', 'O', 'P', 'X', 'Y', 'Z']
+endstates = ['C', 'AB', 'LMNOP', 'XYZ']
 
 states = []
 trans = [ 'alert_%s' % a for a in input ]
