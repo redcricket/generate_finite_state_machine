@@ -109,6 +109,6 @@ while True:
             fsm.alert_Z()
         else:
             fsm.clear_Z()
-    time.sleep(1)
+    # time.sleep(1)
     
 

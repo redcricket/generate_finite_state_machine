@@ -10,7 +10,7 @@ endstates = ['C', 'AB', 'LMNOP', 'XYZ']
 states = []
 trans = [ 'alert_%s' % a for a in input ]
 trans.extend ([ 'clear_%s' % a for a in input ])
-print (trans)
+print ('#', trans)
 # exit(0)
 output = sum([list(map(list, combinations(input, i))) for i in range(len(input) + 1)], [])
 for out in output:
@@ -20,7 +20,7 @@ for out in output:
         states.append(state)
 #states[0]='S0'
 for s in states:
-    print(s)
+    print('#', s)
 
 def dst(t,s):
     action, intent = t.split('_')
@@ -32,13 +32,12 @@ def dst(t,s):
         set_s = set(list(s))
         s = list(set_s)
         s = "".join(sorted(s))
-        # print(s)
         endstate = [es for es in endstates if es in s]
         if endstate:
             s = s.replace(endstate[0],'') 
     else:
         s = s.replace(intent,'')
-        print ("Action is %s new s is %s" % (action, s))
+        print ("# Action is %s new s is %s" % (action, s))
 
     if s is '':
         s = 'S0'
