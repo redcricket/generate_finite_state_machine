@@ -13,12 +13,14 @@ actions = ['alert', 'clear' ]
 # input = ['A', 'B', 'C', 'L', 'M', 'N', 'O', 'P', 'X', 'Y', 'Z']
 # endstates = ['C', 'AB', 'LMNOP', 'XYZ']
 events = {}
+print ("opening alerts.yaml ... ")
 with open("alerts.yaml", 'r') as stream:
     try:
         events = yaml.load(stream)
     except yaml.YAMLError as ex:
         print(ex)
         exit(1)
+print ("end.")
 
 #print(events)
 

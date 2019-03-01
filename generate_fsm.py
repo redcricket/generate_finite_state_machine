@@ -4,13 +4,14 @@ from itertools import combinations
 """
 
 # input = ['A', 'B', 'C', 'X', 'Y', 'Z']
-input = ['A', 'B', 'C', 'L', 'M', 'N', 'O', 'P', 'X', 'Y', 'Z']
-endstates = ['C', 'AB', 'LMNOP', 'XYZ']
+input = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'X', 'Y', 'Z']
+# endstates = ['C', 'AB', 'LMNOP', 'XYZ']
+endstates = ['C', 'AB', 'DEFGHIJK', 'LMNOP', 'XYZ']
 
 states = []
 trans = [ 'alert_%s' % a for a in input ]
 trans.extend ([ 'clear_%s' % a for a in input ])
-print ('#', trans)
+# print ('#', trans)
 # exit(0)
 output = sum([list(map(list, combinations(input, i))) for i in range(len(input) + 1)], [])
 for out in output:
@@ -19,8 +20,8 @@ for out in output:
     if not endstate_in_state:
         states.append(state)
 #states[0]='S0'
-for s in states:
-    print('#', s)
+# for s in states:
+#     print('#', s)
 
 def dst(t,s):
     action, intent = t.split('_')
@@ -37,7 +38,7 @@ def dst(t,s):
             s = s.replace(endstate[0],'') 
     else:
         s = s.replace(intent,'')
-        print ("# Action is %s new s is %s" % (action, s))
+        # print ("# Action is %s new s is %s" % (action, s))
 
     if s is '':
         s = 'S0'
